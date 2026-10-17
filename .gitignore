@@ -1,0 +1,20 @@
+# Dependencies (recreated by `npm install`)
+node_modules/
+
+# Build output (recreated by `npm run build`)
+dist/
+
+# Environment variables / secrets
+.env
+.env.*
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS / editor files
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
