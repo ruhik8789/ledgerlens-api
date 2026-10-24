@@ -1,12 +1,25 @@
-import express from 'express';
+import { createApp } from './app';
+import { env } from './config/env';
 
-const app = express();
-const PORT = 9000;
+const app = createApp();
 
-app.get('/health', (req, res) => {
-    res.json({ status: 'ok' });
+const server = app.listen(env.PORT, () => {
+    console.log(`Server running on http://localhost:${env.PORT} (${env.NODE_ENV})`);
 });
 
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`)
-});
+function shutdown(signal: string) {
+    console.log(`${signal} received, shutting down...`);
+
+    server.close(() => {
+        console.log('Server closed');
+        process.exit(0);
+    });
+
+    setTimeout(() => {
+        console.error('Forcing shutdown');
+        process.exit(1);
+    }, 10_000).unref();
+}
+
+process.on('SIGINT', () => shutdown('SIGINT'));
+process.on('SIGTERM', () => shutdown('SIGTERM'));
